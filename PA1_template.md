@@ -24,18 +24,11 @@ Make a histogram of the total number of steps taken each day.
 
 
 ```r
-png(filename="figure/hist_steps.png", width=480,height=480, units="px") 
-
 hist(StepsDay$steps, main="Histogram of total number of steps taken each day",
      xlab="Total Number of steps")
-
-dev.off()
 ```
 
-```
-## png 
-##   2
-```
+![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png) 
 Calculate and report the mean and median of the total number of steps taken per day.
 
 
@@ -64,27 +57,19 @@ Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and 
 
 
 ```r
-png(filename="figure/activity_pattern.png", width=480,height=480, units="px") 
-
 with(df_activity,
     plot(aggregate(steps, by=list(interval), mean, na.rm = "TRUE"),
          xlab="5 minutes interval", ylab="Average Number of steps",
          main="Average daily activity pattern", type= "l"))
-
-
-dev.off()
 ```
 
-```
-## png 
-##   2
-```
+![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6-1.png) 
 Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
 
 ```r
 StepsInt=aggregate(steps ~ interval, df_activity, mean, na.rm = "TRUE")
-#
+
 StepsInt[which.max(StepsInt$steps),]
 ```
 
@@ -190,18 +175,11 @@ Make a histogram of the total number of steps taken each day.
 ```r
 StepsDay2=aggregate(steps ~ date, df_activity2, sum, na.rm = "TRUE")
 
-png(filename="figure/hist_steps2.png", width=480,height=480, units="px") 
-
 hist(StepsDay2$steps, main="Histogram of total number of steps taken each day",
      xlab="Total Number of steps")
-
-dev.off()
 ```
 
-```
-## png 
-##   2
-```
+![plot of chunk unnamed-chunk-12](figure/unnamed-chunk-12-1.png) 
 
 Calculate and report the mean and median of the total number of steps taken per day.
 
@@ -268,20 +246,11 @@ AvSteps=aggregate(steps ~ interval + daytype, df_activity2, mean)
 
 library(ggplot2)
 
-png(filename="figure/activity_pattern3.png", width=480,height=480, units="px") 
-
-p=ggplot(AvSteps, aes(interval, steps)) + geom_line() + facet_grid(daytype ~ .) + 
+ggplot(AvSteps, aes(interval, steps)) + geom_line() + facet_grid(daytype ~ .) + 
     xlab("5 minutes interval") + ylab("Average Number of steps")
-
-print(p)
-
-dev.off()
 ```
 
-```
-## png 
-##   2
-```
+![plot of chunk unnamed-chunk-15](figure/unnamed-chunk-15-1.png) 
 
 ```r
 Sys.setlocale("LC_TIME", MyLocale)

@@ -29,6 +29,7 @@ hist(StepsDay$steps, main="Histogram of total number of steps taken each day",
 ```
 
 ![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png) 
+
 Calculate and report the mean and median of the total number of steps taken per day.
 
 
@@ -64,6 +65,7 @@ with(df_activity,
 ```
 
 ![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6-1.png) 
+
 Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
 
@@ -202,7 +204,7 @@ median(StepsDay2$steps)
 
 ####  Do these values differ from the estimates from the first part of the assignment?
 
-The mean and the median are equal to **10,766.19 steps***. 
+The mean and the median are equal to **10,766.19 steps**. 
 
 We notice that our imputation strategy slightly impacted the median, although the mean remained equal.
 
@@ -217,15 +219,10 @@ In the chosen strategy the bias is negligible for the given dataset.
 Create a new factor variable in the dataset with two levels - "weekday" and "weekend" indicating whether a given date is a weekday or weekend day.
 
 
-```r
-MyLocale <- Sys.getlocale("LC_TIME")
-
-Sys.setlocale("LC_TIME", "English")
-```
-
 ```
 ## [1] "English_United States.1252"
 ```
+
 
 ```r
 IsWeekDay=function(date){
@@ -250,11 +247,8 @@ ggplot(AvSteps, aes(interval, steps)) + geom_line() + facet_grid(daytype ~ .) +
     xlab("5 minutes interval") + ylab("Average Number of steps")
 ```
 
-![plot of chunk unnamed-chunk-15](figure/unnamed-chunk-15-1.png) 
+![plot of chunk unnamed-chunk-16](figure/unnamed-chunk-16-1.png) 
 
-```r
-Sys.setlocale("LC_TIME", MyLocale)
-```
 
 ```
 ## [1] "English_United States.1252"

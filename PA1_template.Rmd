@@ -6,23 +6,23 @@ Write a report that answers the questions detailed below.
 
 ### Load and preprocess the data
 
-'''{r}
+```{r}
 df_activity=read.csv("data/activity.csv")
 
-'''
+```
 
 ### What is the mean of total number of steps taken per day?
 
 
 Calculate the total number of steps taken per day.
 
-'''{r}
+```{r}
 StepsDay=aggregate(steps ~ date, df_activity, sum, na.rm = "TRUE")
 
-'''
+```
 Make a histogram of the total number of steps taken each day.
 
-'''{r}
+```{r}
 png(filename="figure/hist_steps.png", width=480,height=480, units="px") 
 
 hist(StepsDay$steps, main="Histogram of total number of steps taken each day",
@@ -30,26 +30,26 @@ hist(StepsDay$steps, main="Histogram of total number of steps taken each day",
 
 dev.off()
 
-'''
+```
 Calculate and report the mean and median of the total number of steps taken per day.
 
-'''{r}
+```{r}
 mean(StepsDay$steps)
 
-'''
+```
 The mean of the total number of steps taken per day is 10,766.19 steps.
 
-'''{r}
+```{r}
 median(StepsDay$steps)
 
-'''
+```
 The median of the total number of steps taken per day is 10,765 steps.
 
 ### What is the average daily activity pattern?
 
 Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis).
 
-'''{r}
+```{r}
 png(filename="figure/activity_pattern.png", width=480,height=480, units="px") 
 
 with(df_activity,
@@ -60,15 +60,15 @@ with(df_activity,
 
 dev.off()
 
-'''
+```
 Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
-'''{r}
+```{r}
 StepsInt=aggregate(steps ~ interval, df_activity, mean, na.rm = "TRUE")
 #
 StepsInt[which.max(StepsInt$steps),]
 
-'''
+```
 We see that this is the **835th** interval.
 
 
@@ -76,7 +76,7 @@ We see that this is the **835th** interval.
 
 There are a number of days/invervals where there are missing values.The presence of missing days may introduce bias into some calculations or summaries of the data.
 
-'''{r}
+```{r}
 
 summary(df_activity)
 
@@ -84,26 +84,26 @@ table(is.na(df_activity$steps))
 
 mean(is.na(df_activity$steps))
 
-'''
+```
 
 We see that the missing values are present in the 'step' variable only and that they represent **13 percent** of the total values.
 
-'''{r}
+```{r}
 sum(is.na(df_activity$steps))
-'''
+```
 
 The total number of missing values in the dataset is **2304**.
 
 #### How are these NAs distributed?
 
-'''{r}
+```{r}
 data=aggregate(is.na(df_activity$steps) ~ date, df_activity, sum)
 
 colnames(data)=c("date", "sumNA")
 
 data[data$sumNA > 0,]
 
-'''
+```
 We notice that all intervals for the full day (24*60/5=288) are missing for 8 dates.
 
 #### Strategy for filling in all the missing values.
@@ -113,18 +113,18 @@ The strategy that I have chosen is to use the mean for that particular missing 5
 Create a new dataset that is equal to the original dataset but with the missing data filled in.
 
 
-'''{r}
+```{r}
 
 df_activity2=df_activity
 
 df_activity2$steps = ifelse(is.na(df_activity2$steps),StepsInt$steps[match(df_activity2$interval, StepsInt$interval)],df_activity2$steps)
 
 
-'''
+```
 
 Make a histogram of the total number of steps taken each day.
 
-'''{r}
+```{r}
 StepsDay2=aggregate(steps ~ date, df_activity2, sum, na.rm = "TRUE")
 
 png(filename="figure/hist_steps2.png", width=480,height=480, units="px") 
@@ -134,15 +134,15 @@ hist(StepsDay2$steps, main="Histogram of total number of steps taken each day",
 
 dev.off()
 
-'''
+```
 
 Calculate and report the mean and median of the total number of steps taken per day.
 
-'''{r}
+```{r}
 mean(StepsDay2$steps)
 median(StepsDay2$steps)
 
-'''
+```
 
 ####  Do these values differ from the estimates from the first part of the assignment?
 
@@ -160,7 +160,7 @@ In the chosen strategy the bias is negligible for the given dataset.
 
 Create a new factor variable in the dataset with two levels - "weekday" and "weekend" indicating whether a given date is a weekday or weekend day.
 
-'''{r}
+```{r}
 
 MyLocale <- Sys.getlocale("LC_TIME")
 
@@ -175,13 +175,12 @@ IsWeekDay=function(date){
 }
 df_activity2$daytype=sapply(as.Date(df_activity2$date), IsWeekDay)
 
-'''
+```
 
 Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis).
 
-'''{r}
-
-AvSteps <- aggregate(steps ~ interval + daytype, df_activity2, mean)
+```{r}
+AvSteps=aggregate(steps ~ interval + daytype, df_activity2, mean)
 
 library(ggplot2)
 
@@ -196,6 +195,6 @@ dev.off()
 
 Sys.setlocale("LC_TIME", MyLocale)
 
-''''
+```
 
 
